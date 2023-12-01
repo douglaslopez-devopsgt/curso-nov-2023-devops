@@ -92,7 +92,10 @@ Crear un flujo de GitHub Actions para ejecutar los tests de un proyecto Maven y 
 ```yaml
 name: Maven Build and Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'releases/**'
 
 jobs:
   tests:
@@ -102,11 +105,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
       with:
-        distribution: 'adopt'
-        java-version: '11'
+        java-version: 17
+        distribution: 'corretto'
+        cache: maven
 
     - name: Build with Maven
       run: mvn -B clean verify
